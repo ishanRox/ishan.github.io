@@ -31,7 +31,7 @@ function pojoConvert() {
         }else{
             type=type.trimStart();
         }
-        typeScriptInterface += (`\n ${varName}:${type};\n`);
+        typeScriptInterface += (`\n ${varName}: ${type};\n`);
 
     });
 
