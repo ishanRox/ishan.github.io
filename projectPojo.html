@@ -7,9 +7,18 @@
     <link rel="stylesheet" type="text/css" href="css/main.css" ></link>
 </head>
 <body>
-<h2>simple converter to convert java pojo to typescript</h2>
+<h2>simple converter to convert java pojo to typescript (beta version)</h2>
 
-<textarea placeholder=" this is the place to put java pojo file" id="pojo" rows="25" cols="50"></textarea>
+<table>
+    <tr>
+        <td><textarea placeholder=" this is the place to put java pojo file" id="pojo" rows="25" cols="50"></textarea>
+        </td>
+        <td><textarea placeholder=" this is the place where typescript interface generated" id="interface" rows="25" cols="50"></textarea>
+        </td>
+    </tr>
+</table>
+
+
 <br>
 <button onclick="pojoConvert()">Click to convert</button>
 

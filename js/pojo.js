@@ -2,9 +2,10 @@ function pojoConvert() {
 
     let textArea = document.getElementById("pojo")
     let innerText = textArea.value;
-//finding a class class( )+(.*)( )*{
+
+    //finding a class name used for typescript interface class( )+(.*)( )*{
     let className = innerText.match(/class( )+(.*)( )*{/)[2];
-    console.log(className);
+
     let textInsideClassBody = innerText.match(/(?<=(.|\n|\r)*class.*{)(.|\n)*(?=})/g);
 
     const textInsideClassBodyMethodsRemoved = textInsideClassBody[0].replace(/{(\n|\r| |.)*?}/g, "");
@@ -13,19 +14,26 @@ function pojoConvert() {
 
     const varialbles = (filteredAsLines.filter(e => e.match(/(?<=(.)+)( )+(\w)*( )*(?=;)/)));
 
-    let typeScriptInterface = "export interface " + className + " {";
+    let typeScriptInterface = "export interface " + className + " {\n";
 
     varialbles.map(line => {
-
         const regExpMatchArray = line.match(/((.)+?) ((\w)*( )*)(?=;)/);
+
         let type = regExpMatchArray[1];
         let varName = regExpMatchArray[3];
 
-        //  type=(type.exec(/(byte|short|int|long|float|double)/)!==null)?"number":dataType;
-        console.log(typeof type);
-        console.log(/(byte|short|int|long|float|double)/.exec(type));
-        typeScriptInterface += (`\n ${type}:${varName};`);
+        if (/(byte|short|int|long|float|double)/.exec(type) != null) {
+            type = "number";
+        } else if (/String|char/.exec(type) != null) {
+            type = "string";
+        } else if (/<(.)*>/.exec(type) != null) {
+            type = `${(type.match(/<(.*)>/)[1])}[]`;
+        }else{
+            type=type.trimStart();
+        }
+        typeScriptInterface += (`\n ${varName}:${type};\n`);
 
     });
-    console.log(typeScriptInterface + "\n}")
+
+    document.getElementById("interface").innerHTML = typeScriptInterface + "\n}";
 }
